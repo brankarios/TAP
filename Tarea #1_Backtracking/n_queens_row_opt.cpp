@@ -3,7 +3,7 @@
 using namespace std;
 using namespace std::chrono;
 
-const int BOARD_SIZE = 4;
+const int BOARD_SIZE = 32;
 
 int board[BOARD_SIZE][BOARD_SIZE] = {0};
 
@@ -136,7 +136,7 @@ void check_box(int row, int column, int queen_ID, bool mark){
 
     if (mark){
 
-        board[row][column] = -queen_ID; //Lugar de la reina con valor negativo
+        board[row][column] = -queen_ID; 
 
     }else{
 
