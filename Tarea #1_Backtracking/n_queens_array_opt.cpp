@@ -11,7 +11,7 @@ bool sameDiagonal(int col1, int row1, int col2, int row2){
 
 }
 
-void printSolution(int A[], int n){
+/* void printSolution(int A[], int n){
 
     for (int i = 0; i < n; i++){
 
@@ -30,7 +30,7 @@ void printSolution(int A[], int n){
 
         cout << endl;
     }
-}
+} */
 
 void permute(int step, int A[], int n){
 
@@ -42,7 +42,7 @@ void permute(int step, int A[], int n){
 
     if (step == n){
 
-        printSolution(A, n);
+        // printSolution(A, n);
         solution_found = true;
         return;
 
@@ -73,24 +73,43 @@ void permute(int step, int A[], int n){
     }
 }
 
+void reset(int queens[], int n){
+
+    solution_found = false;
+    for (int i = 0; i < n; i++) {
+        queens[i] = i;
+    }
+}
+
 int main(){
 
-    const int n = 32;
+    const int n = 32; 
+    const int ITERATIONS = 50; 
     int queens[n];
+    long long total_duration = 0;
+    long long total_microseconds = 0;
+    double total_milliseconds = 0.0;
 
-    for (int i = 0; i < n; i++){
+    for (int run = 0; run < ITERATIONS; run++){
 
-        queens[i] = i;
+        reset(queens, n);
+        
+        auto start = high_resolution_clock::now();
+        permute(0, queens, n);
+        auto stop = high_resolution_clock::now();
+        
+        auto duration = duration_cast<microseconds>(stop - start);
+        total_microseconds += duration.count();
+        total_milliseconds += duration.count() / 1000.0;
 
+        total_duration += duration.count();
     }
 
-    auto start = high_resolution_clock::now();
-    permute(0, queens, n);
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
+    double avg_microseconds = static_cast<double>(total_microseconds) / ITERATIONS;
+    double avg_milliseconds = total_milliseconds / ITERATIONS;
 
-    cout << "Execution time: " << duration.count()/1000.0 << " miliseconds" << endl;
-
+    cout << "Total execution time for " << ITERATIONS << " iterations: " << total_duration << " microseconds" << endl;
+    cout << "Average execution time: " << avg_microseconds << " microseconds (" << avg_milliseconds << " milliseconds)" << endl;
 
     return 0;
 }

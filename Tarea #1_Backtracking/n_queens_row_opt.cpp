@@ -9,7 +9,7 @@ int board[BOARD_SIZE][BOARD_SIZE] = {0};
 
 bool solution_found = false;
 
-void print_board(){
+/* void print_board(){
 
     for (int i = 0; i < BOARD_SIZE; i++){
 
@@ -29,7 +29,7 @@ void print_board(){
         cout << endl;
 
     }
-}
+} */ 
 
 
 void check_box(int row, int column, int queen_ID, bool mark){
@@ -156,7 +156,7 @@ void backtracking(int row, int queen_ID){
     if (row == BOARD_SIZE){
 
         solution_found = true; 
-        print_board(); 
+        // print_board(); 
         return;
 
     }
@@ -174,14 +174,38 @@ void backtracking(int row, int queen_ID){
     }
 }
 
+void reset_board(){
+
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            board[i][j] = 0;
+        }
+    }
+    solution_found = false;
+}
+
 int main(){
 
-    auto start = high_resolution_clock::now();
-    backtracking(0, 1);
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
+    const int ITERATIONS = 50;
+    long long total_duration = 0;
     
-    cout << "Execution time: " << duration.count()/1000.0 << " miliseconds" << endl;
+    for (int i = 0; i < ITERATIONS; i++) {
+        reset_board();
+        
+        auto start = high_resolution_clock::now();
+        backtracking(0, 1);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start);
+        
+        total_duration += duration.count();
+    }
+    
+    double average_duration = static_cast<double>(total_duration) / ITERATIONS;
+    
+    cout << "Total execution time for " << ITERATIONS << " iterations: " << total_duration << " microseconds" << endl;
+    cout << "Average execution time: " << average_duration << " microseconds" << endl;
+    cout << "Average execution time: " << average_duration/1000 << " milliseconds" << endl;
+
     
     return 0;
     

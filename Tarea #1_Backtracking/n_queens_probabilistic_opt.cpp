@@ -12,7 +12,7 @@ int board[BOARD_SIZE][BOARD_SIZE] = {0};
 bool solution_found = false;
 mt19937 rng(random_device{}()); // Generador de números pseudoaleatorios Mersenne Twister 19937
 
-void print_board(){
+/* void print_board(){
 
     for (int i = 0; i < BOARD_SIZE; i++){
 
@@ -29,7 +29,7 @@ void print_board(){
         }
         cout << endl;
     }
-}
+} */
 
 void check_box(int row, int column, int queen_ID, bool mark){
 
@@ -144,7 +144,7 @@ void probabilistic_backtracking(int row, int queen_ID){
     if (row == BOARD_SIZE){
 
         solution_found = true;
-        print_board();
+        // print_board();
         return;
 
     }
@@ -172,22 +172,46 @@ void probabilistic_backtracking(int row, int queen_ID){
     }
 }
 
+
+void reset_board(){
+
+    solution_found = false;
+
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            board[i][j] = 0;
+        }
+    }
+}
+
 int main(){
 
-    auto start = high_resolution_clock::now();
-    probabilistic_backtracking(0, 1);
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-    
-    if (solution_found){
+    const int ITERATIONS = 10;
+    long long total_microseconds = 0;
+    int solutions_found = 0;
 
-        cout << "Execution time: " << duration.count()/1000.0 << " miliseconds" << endl;
-
-    } else{
-
-        cout << "No solution found" << endl;
-
+    for (int i = 0; i < ITERATIONS; i++){
+        reset_board();
+        
+        auto start = high_resolution_clock::now();
+        probabilistic_backtracking(0, 1);
+        auto stop = high_resolution_clock::now();
+        
+        auto duration = duration_cast<microseconds>(stop - start);
+        total_microseconds += duration.count();
+        
+        if (solution_found) {
+            solutions_found++;
+        }
     }
+
+    double avg_microseconds = static_cast<double>(total_microseconds) / ITERATIONS;
+    double avg_milliseconds = avg_microseconds / 1000.0;
+    double success_rate = (static_cast<double>(solutions_found) / ITERATIONS) * 100.0;
+
+    cout << "Total duration: " << total_microseconds << endl;
+    cout << "Solutions found: " << solutions_found << " (" << success_rate << "% success rate)" << endl;
+    cout << "Average execution time: " << avg_microseconds << " microseconds (" << avg_milliseconds << " milliseconds)" << endl;
     
     return 0;
 }
