@@ -62,14 +62,14 @@ int getMin(const vector<int>& heap) {
     return heap[0];
 }
 
-void experiment(int N, unsigned seed){
+void experiment(const unsigned long long N, unsigned seed){
 
     vector<int> heap;
-    vector<int> random_numbers; // Almacena los números generados
+    // vector<int> random_numbers; // Almacena los números generados
     mt19937 gen(seed);
     uniform_int_distribution<int> dist(1, 1000000);
 
-    // Generar y almacenar todos los números primero
+    /* Generar y almacenar todos los números primero
     for (int i = 0; i < N; ++i) {
         random_numbers.push_back(dist(gen));
     }
@@ -80,8 +80,9 @@ void experiment(int N, unsigned seed){
         cout << random_numbers[i] << " ";
         if ((i + 1) % 10 == 0) cout << endl;
     }
-    cout << endl << "----------------------------------" << endl;
-    // 1. N inserciones
+
+    cout << endl << "----------------------------------" << endl;*/
+
     auto start_insert = high_resolution_clock::now();
     for (int i = 0; i < N; ++i) {
         int num = dist(gen);
@@ -90,15 +91,13 @@ void experiment(int N, unsigned seed){
     auto end_insert = high_resolution_clock::now();
     auto duration_insert = duration_cast<microseconds>(end_insert - start_insert);
 
-    // 2. N consultas del mínimo
     auto start_getMin = high_resolution_clock::now();
     for (int i = 0; i < N; ++i){
-        volatile int min_val = getMin(heap); // volatile para evitar optimización
+        int min_val = getMin(heap); 
     }
     auto end_getMin = high_resolution_clock::now();
     auto duration_getMin = duration_cast<microseconds>(end_getMin - start_getMin);
 
-    // 3. N extracciones del mínimo
     auto start_extract = high_resolution_clock::now();
     for (int i = 0; i < N; ++i) {
         if (!heap.empty()){
@@ -119,9 +118,9 @@ int main(){
 
     const unsigned seed = 123456789; // Semilla para el generador de números aleatorios
 
-    const unsigned N = 100;
-    experiment(N, seed);
+    const unsigned long long N = 1000000;
 
+    experiment(N, seed);
 
     return 0;
 }
