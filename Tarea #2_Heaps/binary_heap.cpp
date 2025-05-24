@@ -118,7 +118,7 @@ int main(){
 
     const unsigned seed = 123456789; // Semilla para el generador de números aleatorios
 
-    const unsigned long long N = 1000000;
+    const unsigned long long N = 100000;
 
     experiment(N, seed);
 

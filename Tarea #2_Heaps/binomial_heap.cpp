@@ -227,7 +227,7 @@ int main(){
     const unsigned seed = 123456789; // Misma semilla que en el heap binario
     mt19937 gen(seed);
     uniform_int_distribution<int> dist(1, 1000000);
-    const unsigned long long N = 1000000; 
+    const unsigned long long N = 100000; 
     
     experiment(N, gen, dist);
     
