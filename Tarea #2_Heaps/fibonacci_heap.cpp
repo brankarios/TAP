@@ -23,7 +23,8 @@ struct FibonacciNode{
 FibonacciNode* minNode = nullptr;
 int numNodes = 0;
 
-FibonacciNode* createFibonacciNode(int key) {
+FibonacciNode* createFibonacciNode(int key){
+
     FibonacciNode* node = new FibonacciNode;
     node->key = key;
     node->degree = 0;
@@ -33,9 +34,13 @@ FibonacciNode* createFibonacciNode(int key) {
     node->left = node;
     node->right = node;
     return node;
+
 }
 
-void insertToRootList(FibonacciNode* node) {
+// Función para insertar un nodo en la lista circular de raíces 
+
+void insertToRootList(FibonacciNode* node){
+
     if (minNode == nullptr) {
         minNode = node;
     } else {
@@ -48,7 +53,8 @@ void insertToRootList(FibonacciNode* node) {
 
 // Función para enlazar dos nodos
 
-void linkFibonacciNodes(FibonacciNode* y, FibonacciNode* x) {
+void linkFibonacciNodes(FibonacciNode* y, FibonacciNode* x){
+
     // Remover y de la lista de raíces
     y->left->right = y->right;
     y->right->left = y->left;
@@ -71,23 +77,26 @@ void linkFibonacciNodes(FibonacciNode* y, FibonacciNode* x) {
 
 // Función para reorganizar el heap después de remover el nodo mínimo
 
-void consolidate() {
+void consolidate(){
+
     int maxDegree = static_cast<int>(log2(numNodes)) + 1;
     vector<FibonacciNode*> degreeTable(maxDegree, nullptr);
     
     FibonacciNode* current = minNode;
-    unordered_set<FibonacciNode*> processedNodes;
+    unordered_set<FibonacciNode*> processedNodes; 
     
     do {
         FibonacciNode* x = current;
         int degree = x->degree;
         
-        while (degreeTable[degree] != nullptr) {
+        while (degreeTable[degree] != nullptr){     // Se crea una "tabla" de nodos por grado
             FibonacciNode* y = degreeTable[degree];
             if (x->key > y->key) {
                 swap(x, y);
             }
-            linkFibonacciNodes(y, x);
+            linkFibonacciNodes(y, x); // Combina nodos con el mismo grado hasta que todos tengan grados únicos
+
+
             degreeTable[degree] = nullptr;
             degree++;
         }
@@ -98,7 +107,7 @@ void consolidate() {
     } while (processedNodes.find(current) == processedNodes.end());
     
     minNode = nullptr;
-    for (FibonacciNode* node : degreeTable) {
+    for (FibonacciNode* node : degreeTable) { // Reconstruye la lista de raíces y encuentra el nuevo mínimo
         if (node != nullptr) {
             if (minNode == nullptr) {
                 minNode = node;
@@ -113,37 +122,8 @@ void consolidate() {
     }
 }
 
-// Función para cortar un nodo y moverlo a la lista de raíces
-void cut(FibonacciNode* x, FibonacciNode* y) {
-    // Remover x de la lista de hijos de y
-    if (x->right == x) {
-        y->child = nullptr;
-    } else {
-        y->child = x->right;
-        x->left->right = x->right;
-        x->right->left = x->left;
-    }
-    
-    y->degree--;
-    insertToRootList(x);
-    x->parent = nullptr;
-    x->marked = false;
-}
+void fibonacciInsert(int key){
 
-// Función para realizar cortes en cascada
-void cascadingCut(FibonacciNode* y) {
-    FibonacciNode* z = y->parent;
-    if (z != nullptr) {
-        if (!y->marked) {
-            y->marked = true;
-        } else {
-            cut(y, z);
-            cascadingCut(z);
-        }
-    }
-}
-
-void fibonacciInsert(int key) {
     FibonacciNode* node = createFibonacciNode(key);
     
     if (minNode == nullptr) {
@@ -162,7 +142,8 @@ int fibonacciGetMin(){
     return minNode->key;
 }
 
-int fibonacciExtractMin() {
+int fibonacciExtractMin(){
+
     FibonacciNode* z = minNode;
     if (z == nullptr) return -1;
     
@@ -248,7 +229,8 @@ void clearFibonacciHeap() {
 
 // Función para crear un heap aleatorio
 
-FibonacciNode* randomFibonacci(int size, mt19937& gen, uniform_int_distribution<int>& dist) {
+FibonacciNode* randomFibonacci(int size, mt19937& gen, uniform_int_distribution<int>& dist){
+
     FibonacciNode* localMin = nullptr;
     int localNum = 0;
     
@@ -326,7 +308,7 @@ int main(){
     const unsigned seed = 123456789; // Misma semilla que en los dos heaps anteriores
     mt19937 gen(seed);
     uniform_int_distribution<int> dist(1, 1000000);
-    const unsigned long long N = 100000;
+    const unsigned long long N = 1000000;
 
     experiment(N, gen, dist);
     

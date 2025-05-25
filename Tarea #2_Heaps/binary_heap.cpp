@@ -9,8 +9,10 @@ using namespace std::chrono;
 
 // Función para "flotar" un elemento hacia arriba en el heap
 
-void floatUp(vector<int>& heap, int index) {
-    while (index > 0) {
+void floatUp(vector<int>& heap, int index){
+
+    while (index > 0){
+
         int parent = (index - 1) / 2;
         if (heap[index] < heap[parent]) {
             swap(heap[index], heap[parent]);
@@ -23,7 +25,8 @@ void floatUp(vector<int>& heap, int index) {
 
 // Función para "hundir" un elemento hacia abajo en el heap
 
-void sinkDown(vector<int>& heap, int index) {
+void sinkDown(vector<int>& heap, int index){
+
     int size = heap.size();
     while (2 * index + 1 < size) {
         int leftChild = 2 * index + 1;
@@ -44,12 +47,15 @@ void sinkDown(vector<int>& heap, int index) {
     }
 }
 
-void insert(vector<int>& heap, int value) {
+void insert(vector<int>& heap, int value){
+
     heap.push_back(value);
     floatUp(heap, heap.size() - 1);
+
 }
 
-int extractMin(vector<int>& heap) {
+int extractMin(vector<int>& heap){
+
     int minVal = heap[0];
     heap[0] = heap.back();
     heap.pop_back();
@@ -58,14 +64,18 @@ int extractMin(vector<int>& heap) {
     return minVal;
 }
 
-int getMin(const vector<int>& heap) {
+int getMin(const vector<int>& heap){
+
     return heap[0];
+
 }
 
 void experiment(const unsigned long long N, unsigned seed){
 
     vector<int> heap;
-    // vector<int> random_numbers; // Almacena los números generados
+    // vector<int> random_numbers; // Almacena los números generados. Es una prueba para verificar que
+    // la semilla genera los mismos números aleatorios.
+
     mt19937 gen(seed);
     uniform_int_distribution<int> dist(1, 1000000);
 
@@ -118,7 +128,8 @@ int main(){
 
     const unsigned seed = 123456789; // Semilla para el generador de números aleatorios
 
-    const unsigned long long N = 100000;
+    const unsigned long long N = 10000000; // La idea es usar la misma semilla para generar los mismos números
+    // aleatorios en los tres heaps.
 
     experiment(N, seed);
 

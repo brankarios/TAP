@@ -7,15 +7,18 @@
 using namespace std;
 using namespace std::chrono;
 
-struct BinomialNode {
+struct BinomialNode{
+
     int key;
     int degree;
     BinomialNode* parent;
     BinomialNode* child;
     BinomialNode* sibling;
+
 };
 
-BinomialNode* createNode(int key) {
+BinomialNode* createNode(int key){
+
     BinomialNode* node = new BinomialNode;
     node->key = key;
     node->degree = 0;
@@ -23,14 +26,20 @@ BinomialNode* createNode(int key) {
     return node;
 }
 
-void linkTrees(BinomialNode* y, BinomialNode* z) {
+// Esta función enlaza dos árboles binomiales del mismo grado. Es usada luego para la unión
+
+void linkTrees(BinomialNode* y, BinomialNode* z){
+
     y->parent = z;
     y->sibling = z->child;
     z->child = y;
     z->degree++;
 }
 
-BinomialNode* mergeRootLists(BinomialNode* h1, BinomialNode* h2) {
+// Esta función une dos listas de raíces de árboles binomiales. Es usada en la unión de heaps
+
+BinomialNode* mergeRootLists(BinomialNode* h1, BinomialNode* h2){
+
     if (!h1) return h2;
     if (!h2) return h1;
     
@@ -62,7 +71,10 @@ BinomialNode* mergeRootLists(BinomialNode* h1, BinomialNode* h2) {
     return head;
 }
 
-BinomialNode* unionHeaps(BinomialNode* h1, BinomialNode* h2) {
+// Acá ocurre la magia del binomial: la operación de unión
+
+BinomialNode* unionHeaps(BinomialNode* h1, BinomialNode* h2){
+
     BinomialNode* newHead = mergeRootLists(h1, h2);
     if (!newHead) return nullptr;
 
@@ -93,7 +105,11 @@ BinomialNode* unionHeaps(BinomialNode* h1, BinomialNode* h2) {
     return newHead;
 }
 
-BinomialNode* reverseList(BinomialNode* node) {
+// Esta función invierte la lista de raíces de un heap binomial. Es usada para la extracción del mínimo
+// y para la unión de heaps
+
+BinomialNode* reverseList(BinomialNode* node){
+
     BinomialNode* prev = nullptr;
     while (node) {
         BinomialNode* next = node->sibling;
@@ -105,12 +121,14 @@ BinomialNode* reverseList(BinomialNode* node) {
     return prev;
 }
 
-void insert(BinomialNode*& heap, int key) {
+void insert(BinomialNode*& heap, int key){
+
     BinomialNode* node = createNode(key);
     heap = unionHeaps(heap, node);
 }
 
-int getMin(BinomialNode* heap) {
+int getMin(BinomialNode* heap){
+
     if (!heap) return -1;
 
     BinomialNode* x = heap;
@@ -125,7 +143,8 @@ int getMin(BinomialNode* heap) {
     return min;
 }
 
-int extractMin(BinomialNode*& heap) {
+int extractMin(BinomialNode*& heap){
+
     if (!heap) return -1;
 
     BinomialNode* minPrev = nullptr;
@@ -227,7 +246,7 @@ int main(){
     const unsigned seed = 123456789; // Misma semilla que en el heap binario
     mt19937 gen(seed);
     uniform_int_distribution<int> dist(1, 1000000);
-    const unsigned long long N = 100000; 
+    const unsigned long long N = 10000000; 
     
     experiment(N, gen, dist);
     
