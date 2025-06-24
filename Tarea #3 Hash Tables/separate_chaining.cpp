@@ -212,7 +212,7 @@ int main(){
     
     const int NUM_DATA_POINTS = 10000; // Cantidad de elementos base para insertar
     const int MAX_KEY_VALUE = 20000;  // Rango de las claves iniciales
-    const int NUM_REPETITIONS = 3;    // Repetir cada experimento N veces
+    const int NUM_REPETITIONS = 6;    // Repetir cada experimento N veces
     
     vector<int> table_sizes = {1000, 20000, 50000, 100000}; 
 

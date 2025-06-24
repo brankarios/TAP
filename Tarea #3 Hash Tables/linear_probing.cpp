@@ -291,7 +291,7 @@ int main(){
     
     const int NUM_DATA_POINTS = 10000; 
     const int MAX_KEY_VALUE = 20000; 
-    const int NUM_REPETITIONS = 3;    
+    const int NUM_REPETITIONS = 6;    
     
     // IMPORTANTE: Para Linear Probing, table_size DEBE ser mayor que NUM_DATA_POINTS
     // para evitar que las inserciones iniciales fallen debido a una alta carga.

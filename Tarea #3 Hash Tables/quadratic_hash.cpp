@@ -285,7 +285,7 @@ int main(){
     
     const int NUM_DATA_POINTS = 10000; 
     const int MAX_KEY_VALUE = 20000; 
-    const int NUM_REPETITIONS = 3;    
+    const int NUM_REPETITIONS = 6;    
     
     // IMPORTANTE para Quadratic Hash:
     // 1. El tamaño de la tabla (M) debe ser un número primo
